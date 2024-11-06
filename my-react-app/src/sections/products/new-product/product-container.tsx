@@ -33,11 +33,9 @@ const ProductContainer = ({ product }: Props) => {
   const handleOnSubmit = async (data: Product) => {
     setLoading(true);
     try {
-
       let response;
-      // if (product)
-      response = await updateProduct(data);
-      // else response = await createProduct(data);
+      if (product) response = await updateProduct(data);
+      else response = await createProduct(data);
 
       if (response.error) {
         console.log(response.message);

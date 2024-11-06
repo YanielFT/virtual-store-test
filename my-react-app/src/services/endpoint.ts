@@ -5,5 +5,6 @@ export const backendRoutes = {
     create: `${import.meta.env.VITE_SPRING_PUBLIC_API_URL}products/`,
     update: `${import.meta.env.VITE_SPRING_PUBLIC_API_URL}products/`,
     getById: `${import.meta.env.VITE_SPRING_PUBLIC_API_URL}products/:id`,
+    search: `${import.meta.env.VITE_SPRING_PUBLIC_API_URL}products/search/:search`,
   },
 };

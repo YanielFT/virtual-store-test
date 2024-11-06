@@ -1,4 +1,34 @@
-const Search = () => {
+import { useEffect, useState } from "react";
+import { Product } from "../../../interfaces/products/products";
+import { getproductsList, search } from "../../../services/product";
+
+interface Props {
+  setProducts: (_: Product[]) => void;
+}
+
+const Search = ({ setProducts }: Props) => {
+  const [value, setValue] = useState("");
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (e.target.value.trim().length == 0) {
+      const { data, error } = await getproductsList();
+      if (error || !data) throw new Error("Error fetching data");
+
+      setProducts(data);
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      const { data, error } = await search(e.target.value);
+      if (error || !data) throw new Error("Error fetching data");
+
+      setProducts(data);
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  };
+
+  useEffect(() => {});
+
   return (
     <form className="w-full max-w-5xl mx-auto">
       <label
@@ -18,9 +48,9 @@ const Search = () => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
           </svg>
@@ -29,15 +59,12 @@ const Search = () => {
           type="search"
           id="default-search"
           className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search Mockups, Logos..."
+          placeholder="Search products"
           required
+          autoComplete="off"
+          value={value}
+          onChange={onChange}
         />
-        <button
-          type="submit"
-          className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Search
-        </button>
       </div>
     </form>
   );

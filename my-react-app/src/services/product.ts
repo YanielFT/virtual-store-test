@@ -8,13 +8,17 @@ import { backendRoutes } from "./endpoint";
 import { pathBuilder } from "./path-builder";
 
 export async function getproductsList(): Promise<ApiResponse<Product[]>> {
-  //   params: IQueryable
-  //   const url = new QueryParamsURLFactory(
-  //     params,
-  //     backendRoutes.products.list
-  //   ).build();
-
   const res = await fetch(backendRoutes.products.list, {
+    method: "GET",
+  });
+
+  if (!res.ok) return handleApiServerError(res);
+  return buildApiResponseAsync(res.json());
+}
+
+export async function search(value: string): Promise<ApiResponse<Product[]>> {
+  const url = pathBuilder(backendRoutes.products.search, { search: value });
+  const res = await fetch(url, {
     method: "GET",
   });
 
@@ -64,7 +68,6 @@ export async function createProduct(
 export async function updateProduct(
   product: Product
 ): Promise<ApiResponse<Product>> {
-  
   const response = await fetch(backendRoutes.products.update, {
     headers: {
       "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 import { MdDelete } from "react-icons/md";
-import { MdOutlineInfo } from "react-icons/md";
+
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -28,11 +28,7 @@ const TableRow = ({
       <MdDelete className={"w-6 h-6"} />
     </button>
   );
-  const updateButton = (
-    <button type="button">
-      <MdOutlineInfo className={"w-6 h-6"} />
-    </button>
-  );
+
   const toUpdate = () => {
     navigate(`/product/${id}`);
   };
